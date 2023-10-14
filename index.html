@@ -28,7 +28,9 @@
         <div class="col-12">
           <select id="translationChoices" class="form-select mb-3">
             <option selected>Choose the translation</option>
+            <option value="fula-english">Fula -> English</option>
             <option value="mandinka-english">Mandinka -> English</option>
+            <option value="english-fula">English -> Fula</option>
             <option value="english-mandinka">English -> Mandinka</option>
           </select>
         </div>
@@ -71,8 +73,12 @@
     <script>
       const translationDictionary = {};
     </script>
+    <!-- Mandinka -->
     <script src="./translations/mandinka-to-english-dictionary.js"></script>
     <script src="./translations/english-to-mandinka-dictionary.js"></script>
+    <!-- Fula -->
+    <script src="./translations/fula-to-english-dictionary.js"></script>
+    <script src="./translations/english-to-fula-dictionary.js"></script>
     <script>
       const translationChoicesSelect =
         document.getElementById("translationChoices");

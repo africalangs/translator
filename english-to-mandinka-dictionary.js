@@ -213,6 +213,6 @@ translationDictionary["english-mandinka"] = {
   "i am on my way going home": "mbe siilokang mkaa taa suwoo koonoo",
   "i'm in peace": "mbe kairookonoo",
   peace: "kairoo",
-  poverty: "wufaareyaa",
+  poverty: "fuwareyaa",
   "right now": "taf taf",
 };

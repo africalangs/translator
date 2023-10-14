@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Translator</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+      textarea {
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h1>Translator</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <select id="translationChoices" class="form-select mb-3">
+            <option selected>Choose the translation</option>
+            <option value="mandinka-english">Mandinka -> English</option>
+            <option value="english-mandinka">English -> Mandinka</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-sm-6">
+          <form>
+            <div class="form-group">
+              <label for="sourceText">Enter Text:</label>
+              <textarea
+                id="sourceText"
+                rows="4"
+                cols="50"
+                class="form-control"
+                placeholder="Type to translate."
+              ></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="col-6 col-sm-6">
+          <form>
+            <div class="form-group">
+              <label for="translatedText">Translation:</label>
+              <textarea
+                id="translatedText"
+                rows="4"
+                cols="50"
+                class="form-control"
+              ></textarea>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const translationDictionary = {};
+    </script>
+    <script src="./mandinka-to-english-dictionary.js"></script>
+    <script src="./english-to-mandinka-dictionary.js"></script>
+    <script>
+      const translationChoicesSelect =
+        document.getElementById("translationChoices");
+      let translationChoice;
+      let regex;
+
+      translationChoicesSelect.onchange = function () {
+        translationChoice = this.value;
+
+        regex = new RegExp(
+          Object.keys(translationDictionary[translationChoice])
+            .map((phrase) => `\\b${phrase}\\b`)
+            .join("|"),
+          "ig"
+        );
+      };
+
+      function translateText(text) {
+        // Replace each matched phrase using a custom function
+        const translatedText = text.replace(regex, (match) => {
+          // Determine the case of the match in the original text
+          const originalCase =
+            match[0] === match[0].toUpperCase() ? "upper" : "lower";
+
+          // Translate the match and adjust the case as needed
+          const translatedPhrase =
+            translationDictionary[translationChoice][match.toLowerCase()];
+
+          if (originalCase === "upper") {
+            return (
+              translatedPhrase.charAt(0).toUpperCase() +
+              translatedPhrase.slice(1)
+            );
+          } else {
+            return translatedPhrase;
+          }
+        });
+
+        return translatedText;
+      }
+
+      function translate() {
+        const sourceTextArea = document.getElementById("sourceText");
+        const translatedTextArea = document.getElementById("translatedText");
+        const sourceText = sourceTextArea.value;
+        const translatedText = translateText(sourceText);
+        translatedTextArea.value = translatedText;
+      }
+
+      sourceText.oninput = translate;
+    </script>
+  </body>
+</html>
